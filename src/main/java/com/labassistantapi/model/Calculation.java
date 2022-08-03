@@ -14,13 +14,15 @@ public class Calculation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String title;
+    private Integer userId;
 
     public Calculation() {
     }
 
-    public Calculation(Integer id, String title) {
+    public Calculation(Integer id, String title, Integer userId) {
         this.id = id;
         this.title = title;
+        this.userId = userId;
     }
 
     public Integer getId() {
@@ -39,17 +41,25 @@ public class Calculation implements Serializable {
         this.title = title;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Calculation that = (Calculation) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title);
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        return Objects.hash(id, title, userId);
     }
 
     @Override
@@ -57,6 +67,7 @@ public class Calculation implements Serializable {
         return "Calculation{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

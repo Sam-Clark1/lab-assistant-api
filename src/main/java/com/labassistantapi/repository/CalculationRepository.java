@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CalculationRepository extends JpaRepository<Calculation, String> {
+public interface CalculationRepository extends JpaRepository<Calculation, Integer> {
     List<Calculation> findCalculationByTitle(String title) throws Exception;
 }
