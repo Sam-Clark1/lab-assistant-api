@@ -3,6 +3,7 @@ package com.labassistantapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.List;
 import java.io.Serializable;
@@ -18,19 +19,19 @@ public class User implements Serializable {
     @Column(unique = true)
     private String email;
     private String password;
+    @ElementCollection
+    private List<String> calculations = new ArrayList<String>();
     @Transient
     boolean loggedIn;
-
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Calculation> calculations;
 
     public User() {
     }
 
-    public User(Integer id, String email, String password) {
+    public User(Integer id, String email, String password, List<String> calculations) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.calculations = calculations;
     }
 
     public Integer getId() {
@@ -57,19 +58,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public List<Calculation> getCalculations() {
+    public List<String> getCalculations() {
         return calculations;
     }
 
-    public void setCalculations(List<Calculation> calculations) {
+    public void setCalculations(List<String> calculations) {
         this.calculations = calculations;
     }
 
@@ -83,7 +76,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, loggedIn, calculations);
+        return Objects.hash(id, email, password, calculations, loggedIn);
     }
 
     @Override
@@ -92,8 +85,8 @@ public class User implements Serializable {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", loggedIn=" + loggedIn +
                 ", calculations=" + calculations +
+                ", loggedIn=" + loggedIn +
                 '}';
     }
 }
