@@ -1,6 +1,6 @@
-package com.labassistantapi.payload;
+package com.labassistantapi.payload.request;
 
-public class LoginRequest {
+public class SignupRequest {
     private String email;
     private String password;
 
