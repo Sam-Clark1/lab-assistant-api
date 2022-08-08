@@ -66,6 +66,14 @@ public class User implements Serializable {
         this.calculations = calculations;
     }
 
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,7 +84,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, calculations, loggedIn);
+        return Objects.hash(getId(), getEmail(), getPassword(), isLoggedIn());
     }
 
     @Override
