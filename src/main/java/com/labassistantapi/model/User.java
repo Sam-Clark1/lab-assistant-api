@@ -17,18 +17,18 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(unique = true)
+    private String username;
+    @Column(unique = true)
     private String email;
     private String password;
     @ElementCollection
     private List<String> calculations = new ArrayList<String>();
-    @Transient
-    boolean loggedIn;
 
     public User() {
     }
 
-    public User(Integer id, String email, String password, List<String> calculations) {
-        this.id = id;
+    public User(String username, String email, String password, List<String> calculations) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.calculations = calculations;
@@ -40,6 +40,14 @@ public class User implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -66,35 +74,27 @@ public class User implements Serializable {
         this.calculations = calculations;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return loggedIn == user.loggedIn && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(calculations, user.calculations);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(calculations, user.calculations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPassword(), isLoggedIn());
+        return Objects.hash(id, username, email, password, calculations);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", calculations=" + calculations +
-                ", loggedIn=" + loggedIn +
                 '}';
     }
 }
