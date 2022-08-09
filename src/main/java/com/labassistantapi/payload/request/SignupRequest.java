@@ -1,11 +1,16 @@
 package com.labassistantapi.payload.request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SignupRequest {
     private String username;
 
     private String email;
 
     private String password;
+
+    private List<String> calculations = new ArrayList<String>();
 
     public String getUsername() {
         return username;
@@ -31,4 +36,10 @@ public class SignupRequest {
         this.password = password;
     }
 
+    public List<String> getCalculations() {
+        return calculations;
+    }
+    public void setCalculations(List<String> calculations) {
+        this.calculations = calculations;
+    }
 }
