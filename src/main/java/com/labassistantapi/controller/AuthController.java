@@ -3,17 +3,15 @@ package com.labassistantapi.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.labassistantapi.model.User;
 import com.labassistantapi.payload.request.LoginRequest;
@@ -23,6 +21,8 @@ import com.labassistantapi.payload.response.MessageResponse;
 import com.labassistantapi.repository.UserRepository;
 import com.labassistantapi.security.jwt.JwtUtils;
 import com.labassistantapi.security.services.UserDetailsImpl;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -83,5 +83,39 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        List<User> userList = userRepository.findAll();
+        for (User u : userList) {
+            List<String> calculationList = u.getCalculations();
+        }
+        return userList;
+    }
+
+    @GetMapping("/users/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        User returnUser = userRepository.getById(id);
+        List<String> calculationsList = returnUser.getCalculations();
+
+        return returnUser;
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        User tempUser = userRepository.getById(id);
+
+        tempUser.setCalculations(user.getCalculations());
+
+        User updatedUser = userRepository.save(tempUser);
+
+        return updatedUser;
+    }
+
+    @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable int id) {
+        userRepository.deleteById(id);
     }
 }
